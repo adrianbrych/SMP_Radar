@@ -94,3 +94,4 @@ void TPM0_IRQHandler(void) {
 	tpm0Diff = tpm0New - tpm0Old;							 	//Calculate difference
 	TPM0->CONTROLS[3].CnSC |= TPM_CnSC_CHF_MASK;//Clear channel flag
 }
+
