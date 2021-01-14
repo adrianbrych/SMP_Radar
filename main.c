@@ -12,44 +12,66 @@ volatile int j;
 							for(j = 0; j < 3500; j++) {}
 }
 
-void lcd_update(int a) {
-		LCD1602_SetCursor(1, 0);
-		LCD1602_PrintNum(a);
-	}
-	uint32_t i=0;
-int main (void) { 
-	UART0_Init();
-	LCD1602_Init ();
-	LCD1602_SetCursor(4, 1);
-	LCD1602_Print("a");
-	TPM0_Init_InputCapture();	    // TPM0 initialization						
-	//TPM0_Init_OutputCompare();
-	TPM1_Init();
-	TRIG_GPIO_Init();
-	
-	LCD1602_SetCursor(0,0);
-	char rx_buf[]={0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20};
+uint32_t i=0;
 
-  while(1) {
-		TPM1_SetVal(250);
-		for(int k =0; k<11; k++){
-			TRIG_inpulse();
+char rx_buf[]={0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20};
+
+void send(uint32_t val, char* poz){
+	TPM1_SetVal(val);	// 250, 500, 750
+		sprintf(rx_buf,"%s", poz);
+		for(i=0;rx_buf[i]!=0;i++)
+		{
+			while(!(UART0->S1 & UART0_S1_TDRE_MASK));
+			UART0->D = rx_buf[i];
 		}
-		TPM1_SetVal(500);
-		TPM1_SetVal(750);
-		TPM1_SetVal(500);
-		
-		int x = TPM0_GetVal();
-		lcd_update(x/19);
-		sprintf(rx_buf,"%d%c",x/19,0xd);
+			TRIG_inpulse();
+			int x = TPM0_GetVal();
+			sprintf(rx_buf,"%d%c",x/19,0xd);
 			for(i=0;rx_buf[i]!=0;i++)
 			{
 				while(!(UART0->S1 & UART0_S1_TDRE_MASK));
 				UART0->D = rx_buf[i];
 			}
-			delay_ms(100);
-		
-		
-		}
+	delay_ms(200);
+	}
+			
+	
+
+
+
+int main (void) { 
+	UART0_Init();
+	TPM0_Init_InputCapture();	    // TPM0 initialization						
+	//TPM0_Init_OutputCompare();
+	TPM1_Init();
+	TRIG_GPIO_Init();
+	
+
+  while(1) {
+		send(250, "a");
+		delay_ms(250);
+		send(330, "b");
+		delay_ms(250);
+		send(410, "c");
+		delay_ms(250);
+		send(490, "d");
+		delay_ms(250);
+		send(570, "e");
+		delay_ms(250);
+		send(650, "f");
+		delay_ms(250);
+		send(730, "g");
+		delay_ms(250);
+		send(650, "f");
+		delay_ms(250);
+		send(570, "e");
+		delay_ms(250);
+		send(490, "d");
+		delay_ms(250);
+		send(410, "c");
+		delay_ms(250);
+		send(330, "b");
+		delay_ms(250);
+	}	
 }									
-								
+							
