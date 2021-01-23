@@ -1,13 +1,13 @@
 /******************************************************************************
- * This file is a part of the SM2 Tutorial (C).                               *                                                 *
+ * This file is a part of the SM2 Project				                              * 
  ******************************************************************************/
 
 /**
- * @file tpm.h
- * @author Koryciak
- * @date Nov 2020
- * @brief File containing enums, structures and declarations for TPM.
- * @ver 0.1
+ * @file tpm1.h
+ * @author Banys & Brychner
+ * @date Jan 2021
+ * @brief File containing enums, structures and declarations for TPM1.
+ * @ver 1
  */
 
 #ifndef TPM_H
@@ -15,17 +15,10 @@
 
 #include "frdm_bsp.h"
 
-/**
-**
- * @brief TPM0 initialization. PWM.
- */
+// TPM1 initialization. PWM.
 void TPM1_Init(void);
-/**
- * @brief Get value of counter from channel of TPM1.
- *
- * @return Value of counter.
 
- */
+// Setting value to move servo
 void TPM1_SetVal(uint32_t value);
 
-#endif /* TPM_H */
+#endif 
